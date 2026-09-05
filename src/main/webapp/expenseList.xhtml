@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Expense List</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .overdue-stripe {
+                background: #fef2f2;
+                font-weight: bold;
+                color: #dc2626;
+                padding: 2px 8px;
+                border-radius: 10px;
+            }
+            .action-link {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="expenseRegistration" value="Register Expense"/>
+                <h:link outcome="expenseList" value="Expenses"/>
+                <h:outputText value="Welcome, #{userManagementBean.currentUser.username}"
+                              style="margin-left:14px; font-weight:bold; color:#fcd34d"/>
+                <a href="#{request.contextPath}/logout" style="color:#d1fae5; margin-left:12px; text-decoration:none">Logout</a>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title" style="margin-top:0">Expense Records</h1>
+                <p style="margin-bottom:18px">
+                    <h:link outcome="expenseRegistration" value="+ Register a new expense"
+                            style="color:#0f766e;font-weight:bold"/>
+                </p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:dataTable value="#{expenseManagementBean.findExpenseRecords()}" var="ex"
+                                 styleClass="data-table">
+                        <h:column>
+                            <f:facet name="header">Expense ID</f:facet>
+                            #{ex.expenseId}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Description</f:facet>
+                            #{ex.description}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Amount (RWF)</f:facet>
+                            <h:outputText value="#{ex.amount}">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Due Date</f:facet>
+                            <h:outputText value="#{ex.dueDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                            <h:outputText value="#{ex.status}"
+                                          style="#{ex.status == 'PAID' ? 'color:green;font-weight:bold' : (ex.status == 'OVERDUE' ? 'color:red;font-weight:bold' : 'color:#b45309;font-weight:bold')}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Member</f:facet>
+                            <h:outputText value="#{ex.member.memberId} - #{ex.member.firstName} #{ex.member.lastName}"
+                                          rendered="#{not empty ex.member}"/>
+                            <h:outputText value="-" rendered="#{empty ex.member}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Overdue?</f:facet>
+                            <h:outputText value="OVERDUE" styleClass="overdue-stripe"
+                                          rendered="#{ex.overdue}"/>
+                            <h:outputText value="-" rendered="#{!ex.overdue}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Actions</f:facet>
+                            <h:commandLink action="#{expenseManagementBean.prepareUpdate(ex)}"
+                                           value="Edit" styleClass="action-link"
+                                           style="color:#0f766e"/>
+                            <h:commandLink action="#{expenseManagementBean.deleteExpenseRecord(ex)}"
+                                           value="Delete" styleClass="action-link"
+                                           style="color:#dc2626"
+                                           onclick="return confirm('Delete expense #{ex.expenseId} ?');"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+</div>
+        </div>
+    </h:body>
+</f:view>
+</html>

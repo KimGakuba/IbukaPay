@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Home</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .hero-title {
+                font-size: 30px;
+                color: #b45309;
+                border-bottom: 3px solid #f59e0b;
+                padding-bottom: 8px;
+            }
+            .feature {
+                background: #fff7ed;
+                border-left: 5px solid #f59e0b;
+                padding: 12px 16px;
+                border-radius: 6px;
+                margin: 12px 0;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="expenseRegistration" value="Register Expense"/>
+                <h:link outcome="expenseList" value="Expenses"/>
+                <h:outputText value="Welcome, #{userManagementBean.currentUser.username}"
+                              style="margin-left:14px; font-weight:bold; color:#fcd34d"/>
+                <a href="#{request.contextPath}/logout" style="color:#d1fae5; margin-left:12px; text-decoration:none">Logout</a>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="hero-title">Welcome to IbukaPay</h1>
+                <p style="font-size:16px; line-height:1.6">
+                    A distributed Java application for <b style="color:#0f766e">organizing expenses</b>
+                    and <b style="color:#0f766e">avoiding late payments</b> through automated reminders.
+                </p>
+
+                <div class="feature">
+                    <b>Members</b>: register people who manage their payments, and keep their contact
+                    details so reminders can be delivered on time.
+                </div>
+                <div class="feature">
+                    <b>Expenses</b>: record each payment obligation with an amount and a due date.
+                    Any expense that is still pending past its due date is flagged as overdue.
+                </div>
+                <div class="feature">
+                    <b>Automated reminders</b>: when a pending expense is saved, a reminder is
+                    automatically scheduled for the member before the due date.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="page-title">Quick actions</h2>
+                <p class="quick-links">
+                    <h:link outcome="expenseRegistration" styleClass="btn" value="Register an Expense"/>
+                    <h:link outcome="expenseList" styleClass="btn btn-secondary" value="View Expenses"
+                            style="background:#6b7280"/>
+                </p>
+            </div>
+
+            </div>
+    </h:body>
+</f:view>
+</html>

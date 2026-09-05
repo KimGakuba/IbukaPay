@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Member List</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .action-link {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="expenseRegistration" value="Register Expense"/>
+                <h:link outcome="expenseList" value="Expenses"/>
+                <h:outputText value="Welcome, #{userManagementBean.currentUser.username}"
+                              style="margin-left:14px; font-weight:bold; color:#fcd34d"/>
+                <a href="#{request.contextPath}/logout" style="color:#d1fae5; margin-left:12px; text-decoration:none">Logout</a>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title" style="margin-top:0">Registered Members</h1>
+                <p style="margin-bottom:18px">
+                    <h:link outcome="memberRegistration" value="+ Register a new member"
+                            style="color:#0f766e;font-weight:bold"/>
+                </p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:dataTable value="#{memberManagementBean.findMemberRecords()}" var="mbr"
+                                 styleClass="data-table" rowClasses="odd,even">
+                        <h:column>
+                            <f:facet name="header">Member ID</f:facet>
+                            #{mbr.memberId}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Names</f:facet>
+                            #{mbr.firstName} #{mbr.lastName}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Gender</f:facet>
+                            #{mbr.gender}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Age</f:facet>
+                            #{mbr.age}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Email</f:facet>
+                            #{mbr.email}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Phone</f:facet>
+                            #{empty mbr.phoneNumber ? '-' : mbr.phoneNumber}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Actions</f:facet>
+                            <h:commandLink action="#{memberManagementBean.prepareUpdate(mbr)}"
+                                           value="Edit" styleClass="action-link"
+                                           style="color:#0f766e"/>
+                            <h:commandLink action="#{memberManagementBean.deleteMemberRecord(mbr)}"
+                                           value="Delete" styleClass="action-link"
+                                           style="color:#dc2626"
+                                           onclick="return confirm('Delete member #{mbr.memberId} ?');"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+</div>
+        </div>
+    </h:body>
+</f:view>
+</html>

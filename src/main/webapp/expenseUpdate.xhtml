@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Update Expense</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .note {
+                background: #fffbeb;
+                border: 1px solid #fcd34d;
+                padding: 8px 12px;
+                border-radius: 6px;
+                color: #92400e;
+                font-size: 14px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="expenseRegistration" value="Register Expense"/>
+                <h:link outcome="expenseList" value="Expenses"/>
+                <h:outputText value="Welcome, #{userManagementBean.currentUser.username}"
+                              style="margin-left:14px; font-weight:bold; color:#fcd34d"/>
+                <a href="#{request.contextPath}/logout" style="color:#d1fae5; margin-left:12px; text-decoration:none">Logout</a>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title" style="margin-top:0">Update Expense</h1>
+                <p class="note">Updating expense: #{expenseManagementBean.expenseToUpdate.expenseId}
+                    - #{expenseManagementBean.expenseToUpdate.description}</p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:panelGrid columns="3" styleClass="form-grid"
+                                 columnClasses="form-label,form-input,form-msg">
+                        <h:outputLabel for="expenseId" value="Expense ID"/>
+                        <h:inputText id="expenseId"
+                                     value="#{expenseManagementBean.expenseToUpdate.expenseId}"
+                                     readonly="true"/>
+                        <h:message for="expenseId" style="color:red"/>
+
+                        <h:outputLabel for="description" value="Description *"/>
+                        <h:inputText id="description"
+                                     value="#{expenseManagementBean.expenseToUpdate.description}"
+                                     required="true" requiredMessage="Description is required"
+                                     label="Description">
+                            <f:validateLength minimum="5" maximum="100"/>
+                        </h:inputText>
+                        <h:message for="description" style="color:red"/>
+
+                        <h:outputLabel for="amount" value="Amount (RWF) *"/>
+                        <h:inputText id="amount"
+                                     value="#{expenseManagementBean.expenseToUpdate.amount}"
+                                     required="true" requiredMessage="Amount is required" label="Amount">
+                            <f:validateDoubleRange minimum="0.01"/>
+                        </h:inputText>
+                        <h:message for="amount" style="color:red"/>
+
+                        <h:outputLabel for="dueDate" value="Due Date (yyyy-MM-dd) *"/>
+                        <h:inputText id="dueDate"
+                                     value="#{expenseManagementBean.expenseToUpdate.dueDate}"
+                                     required="true" requiredMessage="Due date is required"
+                                     label="Due Date">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:inputText>
+                        <h:message for="dueDate" style="color:red"/>
+
+                        <h:outputLabel for="status" value="Status *"/>
+                        <h:selectOneMenu id="status"
+                                         value="#{expenseManagementBean.expenseToUpdate.status}"
+                                         required="true" requiredMessage="Status is required"
+                                         label="Status">
+                            <f:selectItem itemValue="PENDING" itemLabel="PENDING"/>
+                            <f:selectItem itemValue="PAID" itemLabel="PAID"/>
+                            <f:selectItem itemValue="OVERDUE" itemLabel="OVERDUE"/>
+                        </h:selectOneMenu>
+                        <h:message for="status" style="color:red"/>
+                    </h:panelGrid>
+                    <p style="margin-top:20px">
+                        <h:commandButton value="Save Changes" styleClass="btn"
+                                         action="#{expenseManagementBean.updateExpenseRecord()}"/>
+                        <h:button value="Cancel" outcome="expenseList" styleClass="btn btn-secondary"/>
+                    </p>
+                </h:form>
+</div>
+        </div>
+    </h:body>
+</f:view>
+</html>
