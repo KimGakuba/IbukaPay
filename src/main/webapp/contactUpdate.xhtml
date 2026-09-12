@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Update Contact</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .note {
+                background: #f5f3ff;
+                border: 1px solid #c4b5fd;
+                padding: 8px 12px;
+                border-radius: 6px;
+                color: #5b21b6;
+                font-size: 14px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="contactRegistration" value="Register Contact"/>
+                <h:link outcome="contactList" value="Contacts"/>
+                <h:link outcome="financialRecordRegistration" value="Register Record"/>
+                <h:link outcome="financialRecordList" value="Records"/>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title" style="margin-top:0; color:#7c3aed">Update Contact</h1>
+                <p class="note">Updating contact: #{contactManagementBean.contactToUpdate.contactCode}
+                    - #{contactManagementBean.contactToUpdate.contactName}</p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:panelGrid columns="3" styleClass="form-grid"
+                                 columnClasses="form-label,form-input,form-msg">
+                        <h:outputLabel for="contactCode" value="Contact Code"/>
+                        <h:inputText id="contactCode"
+                                     value="#{contactManagementBean.contactToUpdate.contactCode}"
+                                     readonly="true"/>
+                        <h:message for="contactCode" style="color:red"/>
+
+                        <h:outputLabel for="contactName" value="Contact Name *"/>
+                        <h:inputText id="contactName"
+                                     value="#{contactManagementBean.contactToUpdate.contactName}"
+                                     required="true" requiredMessage="Contact name is required"
+                                     label="Contact Name">
+                            <f:validateLength minimum="3" maximum="60"/>
+                        </h:inputText>
+                        <h:message for="contactName" style="color:red"/>
+
+                        <h:outputLabel for="contactPhoneNumber" value="Phone Number *"/>
+                        <h:inputText id="contactPhoneNumber"
+                                     value="#{contactManagementBean.contactToUpdate.contactPhoneNumber}"
+                                     required="true" requiredMessage="Phone number is required"
+                                     label="Phone Number">
+                            <f:validateRegex pattern="[0-9+\- ]{10,15}"/>
+                        </h:inputText>
+                        <h:message for="contactPhoneNumber" style="color:red"/>
+
+                        <h:outputLabel for="contactEmail" value="Email *"/>
+                        <h:inputText id="contactEmail"
+                                     value="#{contactManagementBean.contactToUpdate.contactEmail}"
+                                     required="true" requiredMessage="Email is required"
+                                     label="Email">
+                            <f:validateRegex
+                                    pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"/>
+                        </h:inputText>
+                        <h:message for="contactEmail" style="color:red"/>
+
+                        <h:outputLabel for="notes" value="Notes"/>
+                        <h:inputTextarea id="notes"
+                                         value="#{contactManagementBean.contactToUpdate.notes}"
+                                         rows="3" cols="30" label="Notes">
+                            <f:validateLength maximum="255"/>
+                        </h:inputTextarea>
+                        <h:message for="notes" style="color:red"/>
+                    </h:panelGrid>
+                    <p style="margin-top:20px">
+                        <h:commandButton value="Save Changes" styleClass="btn"
+                                         action="#{contactManagementBean.updateContactRecord()}"/>
+                        <h:button value="Cancel" outcome="contactList" styleClass="btn btn-secondary"/>
+                    </p>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</f:view>
+</html>

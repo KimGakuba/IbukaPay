@@ -16,9 +16,13 @@
         <property name="hbm2ddl.auto">update</property>
 
         <!--      Entity mapping-->
-        <mapping class="rw.ibukapay.model.Member"/>
-        <mapping class="rw.ibukapay.model.Expense"/>
         <mapping class="rw.ibukapay.model.User"/>
+        <mapping class="rw.ibukapay.model.Contact"/>
+        <mapping class="rw.ibukapay.model.Category"/>
+        <mapping class="rw.ibukapay.model.BillProvider"/>
+        <mapping class="rw.ibukapay.model.FinancialRecord"/>
+        <mapping class="rw.ibukapay.model.Payment"/>
+        <mapping class="rw.ibukapay.model.Reminder"/>
 
     </session-factory>
 

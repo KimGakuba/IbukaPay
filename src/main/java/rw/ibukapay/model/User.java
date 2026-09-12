@@ -12,8 +12,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
- * The Class User - an application account. All accounts share the same scope
- * (single USER role, no privileged accounts).
+ * The Class User - application account holder.
+ * Attributes: userId, userName, passwordHash
+ * All accounts share the same USER scope (no privileged accounts).
  *
  * @version 1.0
  */
@@ -24,48 +25,49 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "user_id", nullable = false)
+    private int userId;
 
-    @Column(nullable = false, unique = true, length = 20)
-    @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
-    @Pattern(regexp = "[a-zA-Z0-9_]+", message = "Username may only contain letters, digits and underscore")
-    private String username;
+    @Column(name = "user_name", nullable = false, unique = true, length = 20)
+    @NotBlank(message = "User name is required")
+    @Size(min = 3, max = 20, message = "User name must be between 3 and 20 characters")
+    @Pattern(regexp = "[a-zA-Z0-9_]+", message = "User name may only contain letters, digits and underscore")
+    private String userName;
 
     // stores a salted PBKDF2 hash (~100 chars); validated on the raw value at registration
-    @Column(nullable = false, length = 255)
+    @Column(name = "password_hash", nullable = false, length = 255)
     @NotBlank(message = "Password is required")
-    private String password;
+    private String passwordHash;
 
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User(String userName, String passwordHash) {
+        this.userName = userName;
+        this.passwordHash = passwordHash;
     }
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

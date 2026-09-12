@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Update Financial Record</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .note {
+                background: #f0f9ff;
+                border: 1px solid #bae6fd;
+                padding: 8px 12px;
+                border-radius: 6px;
+                color: #075985;
+                font-size: 14px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="contactRegistration" value="Register Contact"/>
+                <h:link outcome="contactList" value="Contacts"/>
+                <h:link outcome="financialRecordRegistration" value="Register Record"/>
+                <h:link outcome="financialRecordList" value="Records"/>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title" style="margin-top:0; color:#0284c7">Update Financial Record</h1>
+                <p class="note">Updating record:
+                    #{financialRecordManagementBean.recordToUpdate.recordCode}
+                    - #{financialRecordManagementBean.recordToUpdate.description}</p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:panelGrid columns="3" styleClass="form-grid"
+                                 columnClasses="form-label,form-input,form-msg">
+                        <h:outputLabel for="recordCode" value="Record Code"/>
+                        <h:inputText id="recordCode"
+                                     value="#{financialRecordManagementBean.recordToUpdate.recordCode}"
+                                     readonly="true"/>
+                        <h:message for="recordCode" style="color:red"/>
+
+                        <h:outputLabel for="type" value="Type *"/>
+                        <h:selectOneMenu id="type"
+                                         value="#{financialRecordManagementBean.recordToUpdate.type}"
+                                         required="true" requiredMessage="Type is required"
+                                         label="Type">
+                            <f:selectItem itemValue="I_OWE" itemLabel="Money I Owe"/>
+                            <f:selectItem itemValue="OWED_TO_ME" itemLabel="Money Owed to Me"/>
+                            <f:selectItem itemValue="BILL" itemLabel="Bill"/>
+                        </h:selectOneMenu>
+                        <h:message for="type" style="color:red"/>
+
+                        <h:outputLabel for="description" value="Description *"/>
+                        <h:inputText id="description"
+                                     value="#{financialRecordManagementBean.recordToUpdate.description}"
+                                     required="true" requiredMessage="Description is required"
+                                     label="Description">
+                            <f:validateLength minimum="5" maximum="100"/>
+                        </h:inputText>
+                        <h:message for="description" style="color:red"/>
+
+                        <h:outputLabel for="amount" value="Amount (RWF) *"/>
+                        <h:inputText id="amount"
+                                     value="#{financialRecordManagementBean.recordToUpdate.amount}"
+                                     required="true" requiredMessage="Amount is required"
+                                     label="Amount">
+                            <f:validateDoubleRange minimum="0.01"/>
+                        </h:inputText>
+                        <h:message for="amount" style="color:red"/>
+
+                        <h:outputLabel for="remainingAmount" value="Remaining Amount (RWF) *"/>
+                        <h:inputText id="remainingAmount"
+                                     value="#{financialRecordManagementBean.recordToUpdate.remainingAmount}"
+                                     required="true" requiredMessage="Remaining amount is required"
+                                     label="Remaining Amount">
+                            <f:validateDoubleRange minimum="0.00"/>
+                        </h:inputText>
+                        <h:message for="remainingAmount" style="color:red"/>
+
+                        <h:outputLabel for="dueDate" value="Due Date (yyyy-MM-dd) *"/>
+                        <h:inputText id="dueDate"
+                                     value="#{financialRecordManagementBean.recordToUpdate.dueDate}"
+                                     required="true" requiredMessage="Due date is required"
+                                     label="Due Date">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:inputText>
+                        <h:message for="dueDate" style="color:red"/>
+
+                        <h:outputLabel for="status" value="Status *"/>
+                        <h:selectOneMenu id="status"
+                                         value="#{financialRecordManagementBean.recordToUpdate.status}"
+                                         required="true" requiredMessage="Status is required"
+                                         label="Status">
+                            <f:selectItem itemValue="PENDING" itemLabel="PENDING"/>
+                            <f:selectItem itemValue="PARTIALLY_PAID" itemLabel="PARTIALLY PAID"/>
+                            <f:selectItem itemValue="PAID" itemLabel="PAID"/>
+                            <f:selectItem itemValue="OVERDUE" itemLabel="OVERDUE"/>
+                        </h:selectOneMenu>
+                        <h:message for="status" style="color:red"/>
+
+                        <h:outputLabel for="contact" value="Contact"/>
+                        <h:selectOneMenu id="contact"
+                                         value="#{financialRecordManagementBean.recordToUpdate.selectedContactId}"
+                                         label="Contact">
+                            <f:selectItem itemValue="" itemLabel="-- none --"/>
+                            <f:selectItems value="#{financialRecordManagementBean.contacts}"
+                                           var="c" itemValue="#{c.contactCode}"
+                                           itemLabel="#{c.contactName}"/>
+                        </h:selectOneMenu>
+                        <h:message for="contact" style="color:red"/>
+
+                        <h:outputLabel for="category" value="Category"/>
+                        <h:selectOneMenu id="category"
+                                         value="#{financialRecordManagementBean.recordToUpdate.selectedCategoryId}"
+                                         label="Category">
+                            <f:selectItem itemValue="" itemLabel="-- none --"/>
+                            <f:selectItems value="#{financialRecordManagementBean.categories}"
+                                           var="cat" itemValue="#{cat.id}"
+                                           itemLabel="#{cat.name}"/>
+                        </h:selectOneMenu>
+                        <h:message for="category" style="color:red"/>
+
+                        <h:outputLabel for="billProvider" value="Bill Provider"/>
+                        <h:selectOneMenu id="billProvider"
+                                         value="#{financialRecordManagementBean.recordToUpdate.selectedBillProviderId}"
+                                         label="Bill Provider">
+                            <f:selectItem itemValue="" itemLabel="-- none --"/>
+                            <f:selectItems value="#{financialRecordManagementBean.billProviders}"
+                                           var="bp" itemValue="#{bp.id}"
+                                           itemLabel="#{bp.name}"/>
+                        </h:selectOneMenu>
+                        <h:message for="billProvider" style="color:red"/>
+                    </h:panelGrid>
+                    <p style="margin-top:20px">
+                        <h:commandButton value="Save Changes" styleClass="btn"
+                                         action="#{financialRecordManagementBean.updateFinancialRecord()}"/>
+                        <h:button value="Cancel" outcome="financialRecordList"
+                                  styleClass="btn btn-secondary"/>
+                    </p>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</f:view>
+</html>

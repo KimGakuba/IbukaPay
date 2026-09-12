@@ -31,11 +31,10 @@
             <span class="brand">IBUKAPAY</span>
             <span class="nav-links">
                 <h:link outcome="index" value="Home"/>
-                <h:link outcome="expenseRegistration" value="Register Expense"/>
-                <h:link outcome="expenseList" value="Expenses"/>
-                <h:outputText value="Welcome, #{userManagementBean.currentUser.username}"
-                              style="margin-left:14px; font-weight:bold; color:#fcd34d"/>
-                <a href="#{request.contextPath}/logout" style="color:#d1fae5; margin-left:12px; text-decoration:none">Logout</a>
+                <h:link outcome="contactRegistration" value="Register Contact"/>
+                <h:link outcome="contactList" value="Contacts"/>
+                <h:link outcome="financialRecordRegistration" value="Register Record"/>
+                <h:link outcome="financialRecordList" value="Records"/>
             </span>
         </div>
 
@@ -43,30 +42,34 @@
             <div class="card">
                 <h1 class="hero-title">Welcome to IbukaPay</h1>
                 <p style="font-size:16px; line-height:1.6">
-                    A distributed Java application for <b style="color:#0f766e">organizing expenses</b>
-                    and <b style="color:#0f766e">avoiding late payments</b> through automated reminders.
+                    A personal <b style="color:#0f766e">financial obligation and bill tracking</b>
+                    system for recording the money you owe, money owed to you, and your household
+                    bills - with due dates, statuses and reminders.
                 </p>
 
                 <div class="feature">
-                    <b>Members</b>: register people who manage their payments, and keep their contact
-                    details so reminders can be delivered on time.
+                    <b>Contacts</b>: save any person (a friend, lender, or lender-to-you) without them
+                    needing an account, then link them to your financial records.
                 </div>
                 <div class="feature">
-                    <b>Expenses</b>: record each payment obligation with an amount and a due date.
-                    Any expense that is still pending past its due date is flagged as overdue.
+                    <b>Financial records</b>: record money you owe, money owed to you, or bills - with
+                    amount, remaining amount, due date and status. Anything still pending past its due
+                    date is flagged as overdue.
                 </div>
                 <div class="feature">
-                    <b>Automated reminders</b>: when a pending expense is saved, a reminder is
-                    automatically scheduled for the member before the due date.
+                    <b>Automated reminders</b>: when a pending record is saved, a reminder
+                    is automatically scheduled before the due date.
                 </div>
             </div>
 
             <div class="card">
                 <h2 class="page-title">Quick actions</h2>
                 <p class="quick-links">
-                    <h:link outcome="expenseRegistration" styleClass="btn" value="Register an Expense"/>
-                    <h:link outcome="expenseList" styleClass="btn btn-secondary" value="View Expenses"
-                            style="background:#6b7280"/>
+                    <h:link outcome="financialRecordRegistration" styleClass="btn" value="Register a Record"/>
+                    <h:link outcome="financialRecordList" styleClass="btn" value="View Records"
+                            style="background:#0f766e"/>
+                    <h:link outcome="contactRegistration" styleClass="btn btn-secondary"
+                            value="Register a Contact"/>
                 </p>
             </div>
 

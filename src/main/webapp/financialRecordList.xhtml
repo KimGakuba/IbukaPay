@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Financial Record List</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .overdue-stripe {
+                background: #fef2f2;
+                font-weight: bold;
+                color: #dc2626;
+                padding: 2px 8px;
+                border-radius: 10px;
+            }
+            .action-link {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+            .form-title {
+                color: #0284c7;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="contactRegistration" value="Register Contact"/>
+                <h:link outcome="contactList" value="Contacts"/>
+                <h:link outcome="financialRecordRegistration" value="Register Record"/>
+                <h:link outcome="financialRecordList" value="Records"/>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title form-title" style="margin-top:0">Financial Records</h1>
+                <p style="margin-bottom:18px">
+                    <h:link outcome="financialRecordRegistration" value="+ Register a new record"
+                            style="color:#0284c7;font-weight:bold"/>
+                </p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:dataTable value="#{financialRecordManagementBean.findFinancialRecords()}"
+                                 var="rec" styleClass="data-table">
+                        <h:column>
+                            <f:facet name="header">Code</f:facet>
+                            #{rec.recordCode}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Type</f:facet>
+                            #{rec.typeLabel}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Description</f:facet>
+                            #{rec.description}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Amount (RWF)</f:facet>
+                            <h:outputText value="#{rec.amount}">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Remaining (RWF)</f:facet>
+                            <h:outputText value="#{rec.remainingAmount}">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Due Date</f:facet>
+                            <h:outputText value="#{rec.dueDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                            <h:outputText value="#{rec.status}"
+                                          style="#{rec.status == 'PAID' ? 'color:green;font-weight:bold' : (rec.status == 'OVERDUE' ? 'color:red;font-weight:bold' : (rec.status == 'PARTIALLY_PAID' ? 'color:#0369a1;font-weight:bold' : 'color:#b45309;font-weight:bold'))}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Contact</f:facet>
+                            <h:outputText value="#{rec.contact.contactName}"
+                                          rendered="#{not empty rec.contact}"/>
+                            <h:outputText value="-" rendered="#{empty rec.contact}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Category</f:facet>
+                            <h:outputText value="#{rec.category.name}"
+                                          rendered="#{not empty rec.category}"/>
+                            <h:outputText value="-" rendered="#{empty rec.category}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Actions</f:facet>
+                            <h:commandLink action="#{financialRecordManagementBean.prepareUpdate(rec)}"
+                                           value="Edit" styleClass="action-link"
+                                           style="color:#0284c7"/>
+                            <h:commandLink action="#{financialRecordManagementBean.deleteFinancialRecord(rec)}"
+                                           value="Delete" styleClass="action-link"
+                                           style="color:#dc2626"
+                                           onclick="return confirm('Delete record #{rec.recordCode} ?');"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</f:view>
+</html>

@@ -30,11 +30,10 @@
             <span class="brand">IBUKAPAY</span>
             <span class="nav-links">
                 <h:link outcome="index" value="Home"/>
-                <h:link outcome="expenseRegistration" value="Register Expense"/>
-                <h:link outcome="expenseList" value="Expenses"/>
-                <h:outputText value="Welcome, #{userManagementBean.currentUser.username}"
-                              style="margin-left:14px; font-weight:bold; color:#fcd34d"/>
-                <a href="#{request.contextPath}/logout" style="color:#d1fae5; margin-left:12px; text-decoration:none">Logout</a>
+                <h:link outcome="contactRegistration" value="Register Contact"/>
+                <h:link outcome="contactList" value="Contacts"/>
+                <h:link outcome="financialRecordRegistration" value="Register Record"/>
+                <h:link outcome="financialRecordList" value="Records"/>
             </span>
         </div>
 
@@ -43,40 +42,46 @@
                 <h1 class="thankyou" style="border-bottom:none">Thank you!</h1>
                 <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
 
-                <!-- recap shown after a member registration -->
-                <h:panelGroup layout="block" styleClass="summary" rendered="#{not empty member.memberId}">
+                <!-- recap shown after a contact registration -->
+                <h:panelGroup layout="block" styleClass="summary"
+                              rendered="#{not empty contact.contactCode}">
                     <p style="margin:4px 0">
-                        Member <b style="color:#0f766e">#{member.memberId}</b>
-                        was registered successfully with names
-                        <b>#{member.firstName} #{member.lastName}</b>.
+                        Contact <b style="color:#0f766e">#{contact.contactCode}</b>
+                        was registered successfully with name
+                        <b>#{contact.contactName}</b>.
                     </p>
                 </h:panelGroup>
 
-                <!-- recap shown after an expense registration -->
-                <h:panelGroup layout="block" styleClass="summary" rendered="#{not empty expense.expenseId}">
+                <!-- recap shown after a financial record registration -->
+                <h:panelGroup layout="block" styleClass="summary"
+                              rendered="#{not empty financialRecord.recordCode}">
                     <p style="margin:4px 0">
-                        Expense <b style="color:#0f766e">#{expense.expenseId}</b>
-                        (#{expense.description}) of
+                        Record <b style="color:#0f766e">#{financialRecord.recordCode}</b>
+                        (#{financialRecord.description}) of
                         <b>
-                            <h:outputText value="#{expense.amount}">
+                            <h:outputText value="#{financialRecord.amount}">
                                 <f:convertNumber pattern="#,##0.00"/>
                             </h:outputText>
                             RWF
                         </b>
-                        due on <b>#{expense.formattedDueDate}</b> was registered.
+                        due on <b>#{financialRecord.formattedDueDate}</b> was registered
+                        as <b>#{financialRecord.typeLabel}</b>.
                     </p>
                     <p style="margin:4px 0">
-                        <h:outputText value="Member: #{expense.member.memberId} - #{expense.member.firstName} #{expense.member.lastName}"
-                                      rendered="#{not empty expense.member}"/>
+                        <h:outputText value="Contact: #{financialRecord.contact.contactName}"
+                                      rendered="#{not empty financialRecord.contact}"/>
                     </p>
                 </h:panelGroup>
 
                 <p style="margin:24px 0">
-                    <h:link outcome="expenseList" value="View expenses" styleClass="btn btn-secondary"/>
+                    <h:link outcome="financialRecordList" value="View records"
+                            styleClass="btn btn-secondary"/>
+                    <h:link outcome="contactList" value="View contacts"
+                            styleClass="btn btn-secondary" style="margin-left:10px"/>
                     <h:link outcome="index" value="Back to home" styleClass="btn"
                             style="margin-left:10px"/>
                 </p>
-</div>
+            </div>
         </div>
     </h:body>
 </f:view>

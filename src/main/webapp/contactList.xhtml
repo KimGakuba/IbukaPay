@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>IbukaPay - Contact List</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <style type="text/css">
+            /* internal (embedded) CSS - only used on this page */
+            .action-link {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+            .page-title {
+                color: #7c3aed;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="navbar">
+            <span class="brand">IBUKAPAY</span>
+            <span class="nav-links">
+                <h:link outcome="index" value="Home"/>
+                <h:link outcome="contactRegistration" value="Register Contact"/>
+                <h:link outcome="contactList" value="Contacts"/>
+                <h:link outcome="financialRecordRegistration" value="Register Record"/>
+                <h:link outcome="financialRecordList" value="Records"/>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h1 class="page-title" style="margin-top:0">Registered Contacts</h1>
+                <p style="margin-bottom:18px">
+                    <h:link outcome="contactRegistration" value="+ Register a new contact"
+                            style="color:#7c3aed;font-weight:bold"/>
+                </p>
+                <h:form>
+                    <h:messages globalOnly="false" styleClass="error-box" infoStyleClass="info-box"/>
+                    <h:dataTable value="#{contactManagementBean.findContactRecords()}" var="ctc"
+                                 styleClass="data-table">
+                        <h:column>
+                            <f:facet name="header">Code</f:facet>
+                            #{ctc.contactCode}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            #{ctc.contactName}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Phone</f:facet>
+                            #{ctc.contactPhoneNumber}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Email</f:facet>
+                            <h:outputText value="#{ctc.contactEmail}"
+                                          rendered="#{not empty ctc.contactEmail}"/>
+                            <h:outputText value="-" rendered="#{empty ctc.contactEmail}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Notes</f:facet>
+                            <h:outputText value="#{ctc.notes}"
+                                          rendered="#{not empty ctc.notes}"/>
+                            <h:outputText value="-" rendered="#{empty ctc.notes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Actions</f:facet>
+                            <h:commandLink action="#{contactManagementBean.prepareUpdate(ctc)}"
+                                           value="Edit" styleClass="action-link"
+                                           style="color:#7c3aed"/>
+                            <h:commandLink action="#{contactManagementBean.deleteContactRecord(ctc)}"
+                                           value="Delete" styleClass="action-link"
+                                           style="color:#dc2626"
+                                           onclick="return confirm('Delete contact #{ctc.contactCode} ?');"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</f:view>
+</html>
